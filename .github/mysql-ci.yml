@@ -25,4 +25,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Wait for MySQ
+      - name: Wait for MySQL to be ready
+        run: |
+          sleep 20
+          echo "MySQL should be ready now."
+
+      - name: Run SQL commands
+        run: |
+          sudo apt-get install -y mysql-client
+          mysql -h 127.0.0.1 -P 3306 -u root -proot < create_tables.sql
+          mysql -h 127.0.0.1 -P 3306 -u root -proot -e "USE demo; SELECT * FROM students;"
